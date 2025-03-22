@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Indexer</title>
+    <style>{...}</style>
+</head>
+<body>
+    <h1>Blockchain Indexer</h1>
+    <form id="configForm">
+        <!-- Keep form fields but remove hardcoded values -->
+    </form>
+    <div id="message"></div>
+    <script>
+        // Updated to use environment variables
+        const API_BASE = process.env.FLASK_URL || 'http://localhost:5000';
+        
+        document.getElementById('configForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch(`${API_BASE}/configure`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+                });
+                if (!response.ok) throw new Error('Configuration failed');
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
